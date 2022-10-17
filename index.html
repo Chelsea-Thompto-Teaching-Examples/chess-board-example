@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <title>For Loop Chess Board</title>
+  <script type="text/javascript" src="./scripts/chessboard.js"></script>
+  <script type="text/javascript" src="./src/p5/p5.js"></script>
+  <script type="text/javascript" src="./scripts/chessboard2.js"></script>
+  <script type="text/javascript" src="./src/three/three.min.js"></script>
+  <script type="text/javascript" src="./scripts/copy-text.js"></script>
+  <link rel="stylesheet" href="./style.css">
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/styles/github-dark.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/highlight.min.js"></script>
+  <script>
+    hljs.highlightAll();
+  </script>
+</head>
+
+<body>
+  <main>
+
+    <h1>
+      For Loop Chess Board
+    </h1>
+    <h2>
+      Overview
+    </h2>
+    <p>
+      This page outlines the use of for loops and nested for loops starting with vanilla JavaScript and then extends the logic to examples in the <a href="https://p5js.org/">P5.js</a> and <a href="https://threejs.org/">Three.js</a> JavaScript
+      Libraries. This is based on the
+      <a href="https://eloquentjavascript.net/02_program_structure.html#i_swb9JBtSQQ">Chess Board exercise</a> part of Chapter 2 of the book <a href="https://eloquentjavascript.net/">Eloquent JavaScript</a>.
+    </p>
+    <ul>
+      <li>Structure of a For Loop</li>
+      <li>Nested For Loop (Eloquent JavaScript Chess Board Example)</li>
+      <li>Nested For Loop in P5.js (2D Chess Board)</li>
+      <li>Nested For Loop in Three.js (3D Chess Board)</li>
+      <li>(Coming Next) Double Nested For Loops (Chess Board With Pieces)</li>
+    </ul>
+    <h2>Structure of a For Loop</h2>
+    <p>A for loop has 3 parts, these parts are separated by semicolons <code>;</code> and contained within a set of parenthesis <code>( )</code>. The 3 parts are:</p>
+    <ol>
+      <li>The initialization expression, this sets the loop counter.</li>
+      <li>The conditional expression, this checks a true/false condition, if true the code within the statement section executes.</li>
+      <li>The increment expression, this updates the loop counter and is executed after the statement section each loop.</li>
+    </ol>
+    <p>After the parenthesis, there is a set of curly braces <code>{ }</code>, the code to be executed during each loop is placed within these braces. Taken all together, it looks like this:</p>
+    <pre><code class="language-javascript hljs">for (let i = 0; i < 10; i++) {
+  //statement section
+}</code></pre>
+    <p>In the above, <code>let 1 = 0</code> is the initialization expression, <code>i < 10</code> is the conditional expression, and <code>i++</code> is the increment expression. So, the above loop creates a counter that starts at 0, if the counter
+          is less than 10, the statement section is executed and finally the counter is increased by 1 (that is what the <code>++</code> does). If we added a <code>console.log()</code> function to the statement section that prints Hi and the current
+          loop counter value to the console, it could look like this:</p>
+    <pre><code class="language-javascript hljs">for (let i = 0; i < 10; i++) {
+  console.log('Hi '+i);
+}</code></pre>
+    <p>This is produce the following in the console:
+    </p>
+    <pre>
+  Hi 0
+  Hi 1
+  Hi 2
+  Hi 3
+  Hi 4
+  Hi 5
+  Hi 6
+  Hi 7
+  Hi 8
+  Hi 9
+</pre>
+    <p>More on for loops can be found on MDN:</p>
+    <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Loops_and_iteration">https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Loops_and_iteration</a>
+    <h2>Nested For Loop (Eloquent JavaScript Chess Board Example)</h2>
+    <p>The Eloquent JavaScript Chess Board exercise calls for the creation of a script that creates a chess board like graphic in the console by using nested for loops. Nesting one for loop within another allows for another for loop to be run at
+      every step of the loop it is inside of. In our example above, if we placed a for loop in the statement section it would be run between each time the <code>console.log('Hi '+i);</code> was run. So if we wanted to say “hi” 5 times and “wait” 3
+      times in between each hi, it could look like this: </p>
+    <pre><code class="language-javascript hljs">for (let i = 0; i < 5; i++) {
+  console.log('Hi '+i);
+  for (let j = 0; j < 3; j++) {
+    console.log('wait '+j);
+  }
+}</code></pre>
+    <p>And the console output would look like this:</p>
+    <pre>
+  Hi 0
+  wait 0
+  wait 1
+  wait 2
+  Hi 1
+  wait 0
+  wait 1
+  wait 2
+  Hi 2
+  wait 0
+  wait 1
+  wait 2
+  Hi 3
+  wait 0
+  wait 1
+  wait 2
+  Hi 4
+  wait 0
+  wait 1
+  wait 2
+</pre>
+    <p>Using the nested the nested for loop to create a console chess board can be accomplished as follows:</p>
+    <pre><code class="language-javascript hljs">// Creating a function to contain the chessboard.
+const makeBoard = function() {
+
+// Defining the variables for size and text content.
+var size = 8;
+var chessboard = '';
+
+  // The 'for loop' controlling the lines.
+  for (let i = 0; i < size; i++) {
+
+    // The 'for loop' controlling the characters.
+    for (let j = 0; j < size; j++) {
+      // Checking board position for character value
+      // and then assigning a character value to be
+      // added to the string value of 'chessboard'.
+      if ((i + j) % 2 == 0) {
+        chessboard += '#';
+      } else {
+        chessboard += ' ';
+      }
+    }
+    // Once the line is filled with characters equal
+    // to the 'size', adding a new line character '\n'
+    // to the string value of 'chessboard'.
+    chessboard += '\n';
+  }
+
+  // Once the outer 'for loop' is complete thereby
+  // completing the last row and character of the
+  // board, print the result to the console using the
+  // console.log() command.
+  console.log(chessboard);
+};
+
+// Call the function makeBoard to execute the code
+// defined within it's {}.
+makeBoard();
+</code></pre>
+    <p>Here is the same code without comments:</p>
+    <pre><code class="language-javascript hljs">const makeBoard = function() {
+  var size = 8;
+  var chessboard = '';
+  for (let i = 0; i < size; i++) {
+    for (let j = 0; j < size; j++) {
+      if ((i + j) % 2 == 0) {
+        chessboard += '#';
+      } else {
+        chessboard += ' ';
+      }
+    }
+    chessboard += '\n';
+  }
+  console.log(chessboard);
+}
+
+makeBoard();
+</code></pre>
+<p>And it results in the following console text:</p>
+<pre>
+# # # #
+ # # # #
+# # # #
+ # # # #
+# # # #
+ # # # #
+# # # #
+ # # # #
+</pre>
+    <h2>Nested For Loop in P5.js (2D Chess Board)</h2>
+    <p>To bring this logic into a library, we first need to understand how to work with the library itself. Information on getting started with P5.js can be found here: <a href="https://p5js.org/get-started/">https://p5js.org/get-started/</a></p>
+    <p>For the example below, first variables are established to handle the square size, number of squares, border size and canvas size. After these variables are defined, the p5.js <code>setup()</code> function is called to create the canvas and draw the board. The board itself is created using a nested for loop as above but with the p5.js <code>rect()</code> function to create alternating color squares instead of the <code>console.log()</code> characters. The resulting design looks like this:
+</p>
+    <div id="chess-board-2"></div>
+    <p>And the code looks like:</p>
+    <pre><code class="language-javascript hljs">// The variables for the scene
+let canvas;
+let size = 8;
+let tileSize = 50;
+let border = 50;
+let canvasWidth = (size*tileSize)+(border*2);
+let canvasHeight = (size*tileSize)+(border*2);
+
+// The setup function to create and place the canvas and run
+// the board function.
+function setup() {
+  canvas = createCanvas(canvasWidth, canvasHeight);
+  canvas.parent('chess-board-2');
+  noStroke();
+  // The board function being called
+  makeBoard2();
+}
+
+// The draw function is empty in this example.
+function draw() {
+}
+
+// The function housing the nested for loop
+let makeBoard2 = function() {
+  background(120);
+  for (let i = 0; i < size; i++) {
+    for (let j = 0; j < size; j++) {
+      if ((i + j) % 2 == 0) {
+        // The color being set for the tile.
+        fill(0);
+      } else {
+        // The color being set for the tile.
+        fill(255);
+      }
+      // Draw the tile with the given color.
+      rect(border+(i*tileSize), border+(j*tileSize), tileSize);
+    }
+  }
+}
+    </code></pre>
+    <p>
+    Just like the <code>console.log()</code> example, a variable called ‘size’ is used to define the number of squares in the grid. The for loop here allows 64 rectangles to be drawn while only needing 1 instance of the <code>rect()</code> function.
+  </p>
+    <h2>Nested For Loop in Three.js (3D Chess Board)</h2>
+    <p>
+      This example will use the same nested for loop logic in a different library, this one used for creating 3D spaces in JavaScript called Three.js. You can get started with Three.js here:
+    </p>
+    <a href="https://threejs.org/docs/index.html#manual/en/introduction/Creating-a-scene">https://threejs.org/docs/index.html#manual/en/introduction/Creating-a-scene</a>
+    <p>
+      In the example below, a scene is created and then the colors and shapes are defined. After this, the nested for loop is implemented to render the tiles of the board and add them to the scene. After, the camera is set and the animation is defined within the render() function. This results in the the following scene:
+    </p>
+    <div id="chess-board-3"></div>
+    <script src="./scripts/chessboard3.js"></script>
+    <p>
+      And the code looks like this:
+    </p>
+    <pre><code class="language-javascript hljs">// Create and place a scene with Three.js
+const container = document.getElementById('chess-board-3');
+
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(
+  50,
+  500 / 500,
+  0.1,
+  1000
+);
+const renderer = new THREE.WebGLRenderer();
+renderer.setClearColor(0x787878);
+renderer.setPixelRatio(window.devicePixelRatio);
+renderer.setSize(500, 500);
+container.appendChild(renderer.domElement);
+
+// Board Materials
+const whiteMat = new THREE.MeshStandardMaterial({
+  color: 0xffffff
+})
+const blackMat = new THREE.MeshStandardMaterial({
+  color: 0x000000
+})
+
+// Board Geometry
+const tileShape = new THREE.BoxGeometry(1, 1, 1);
+
+// Wireframe (for white cubes)
+const matLineBasic = new THREE.LineBasicMaterial({
+  color: 0x000000
+});
+let wireframe = new THREE.WireframeGeometry(tileShape);
+let line = new THREE.LineSegments(wireframe, matLineBasic);
+
+// Group for Board (group used to rotate all cubes at once)
+const board = new THREE.Group();
+
+// Function for creating the board
+const makeBoard3 = function() {
+  var size = 8;
+  for (let i = 0; i < size; i++) {
+    for (let j = 0; j < size; j++) {
+      if ((i + j) % 2 == 0) {
+        let tile = new THREE.Mesh(tileShape, whiteMat);
+        tile.position.set(i - 3.5, j - 3.5, 0);
+        board.add(tile);
+        let wireframe = new THREE.WireframeGeometry(tileShape);
+        let line = new THREE.LineSegments(wireframe, matLineBasic);
+        line.position.set(i - 3.5, j - 3.5, 0);
+        board.add(line);
+      } else {
+        let tile = new THREE.Mesh(tileShape, blackMat);
+        tile.position.set(i - 3.5, j - 3.5, 0);
+        board.add(tile);
+      }
+    }
+  }
+  scene.add(board);
+}
+
+// Call board function
+makeBoard3();
+
+// Position our camera so we can see the shape
+camera.position.z = 10;
+camera.position.y = -12;
+camera.position.x = 0;
+camera.rotation.x = 45 * Math.PI / 180;
+//camera.rotation.z = 20 * Math.PI / 180;
+
+// Add a directional light to the scene
+const directionalLight = new THREE.DirectionalLight(0xffffff, 0.7);
+scene.add(directionalLight);
+
+// Add an ambient light to the scene
+const ambientLight = new THREE.AmbientLight(0xffffff, 0.95);
+scene.add(ambientLight);
+
+// Define and then call the render loop
+// Define
+function render() {
+  requestAnimationFrame(render);
+  board.rotation.z += 0.005;
+  renderer.render(scene, camera);
+}
+// Call the render function
+render();
+    </code></pre>
+    <h2>Coming Soon</h2>
+    <p>Next, I will be adding a section to show nesting another for loop within the second one in plain JavaScript, P5.js, and Three.js.</p>
+  </main>
+
+</body>
+
+</html>
